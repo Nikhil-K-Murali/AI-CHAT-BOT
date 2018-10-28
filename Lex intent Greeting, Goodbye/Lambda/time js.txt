@@ -1,0 +1,18 @@
+exports.handler = (event, context, callback) => {
+    console.log(JSON.stringify(event))
+    var datetime = new Date(Date.now()).toLocaleString('en-US', { timeZone: 'Asia/Calcutta'});
+    datetime=datetime.toLocaleString();
+    var time1=datetime.split(", ");
+    var temp=time1[1].split(" ");
+    var response ={
+        "dialogAction": {
+            "type":"Close",
+            "fulfillmentState":"Fulfilled",
+            "message": {
+                "contentType":"PlainText",
+                "content":temp
+            }
+        }
+    }
+    callback(null, response);
+};

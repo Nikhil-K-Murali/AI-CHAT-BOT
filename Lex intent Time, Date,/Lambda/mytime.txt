@@ -1,0 +1,47 @@
+exports.handler = (event, context, callback) => {
+    
+    console.log(JSON.stringify(event)); //creating log file
+    
+    var datetime = new Date(Date.now()).toLocaleString('en-IN', { timeZone: 'Asia/Calcutta'});
+    //datetime=datetime.toLocaleString();
+    var intent = event.currentIntent.name;
+    
+    if(intent == "currentTime") {
+        
+    var time1=datetime.split(", ");
+    time1=time1[1].split(" ");
+    var temp=time1[0].split(":");
+    temp=temp[0]+":"+temp[1]+" "+time1[1];
+    var response ={
+        "dialogAction": {
+            "type":"Close",
+            "fulfillmentState":"Fulfilled",
+            "message": {
+                "contentType":"PlainText",
+                "content":"The time is "+temp
+            }
+        }
+    }
+    callback(null, response);
+        
+        
+    } else {
+        
+        
+        var date1=datetime.split(", ");
+        date1 = "Todays date is "+date1[0];
+        var response ={
+        "dialogAction": {
+            "type":"Close",
+            "fulfillmentState":"Fulfilled",
+            "message": {
+                "contentType":"PlainText",
+                "content": date1
+            }
+        }
+    }
+        callback(null, response)
+        
+    }
+   
+};

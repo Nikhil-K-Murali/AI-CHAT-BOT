@@ -1,0 +1,37 @@
+var http = require('http');
+exports.handler = (event, context, callback) => {
+	//var url1='http://ipstack.com/';
+	const url = 'http://api.openweathermap.org/data/2.5/weather?q=bangalore,IN&appid=4371f2c869b96f586f2989045ab73d53&units=metric'
+	var res = http.get(url, function(res){
+		var body = '';
+		
+		res.on('data', function(chunk){
+			body += chunk;	
+		});
+		res.on('end', function(){
+			var responce = JSON.parse(body);
+			console.log("Got a Weather responce: "+responce);
+			var weather="Current weather in "+responce['name']+" The temperature is "+Math.floor(responce.main['temp'])+" °C. "+responce.weather[0]["description"]+", with humidity "+responce.main["humidity"]+"%, preasure ";
+			weather += responce.main['pressure']+" Hectopascal"
+			var final ={
+	            
+					"dialogAction": {
+            
+						"type":"Close",
+            
+						"fulfillmentState":"Fulfilled",
+                
+						"message": {
+                    
+							"contentType":"PlainText",
+                    
+							"content" : weather               
+						}
+            
+			
+					}
+				}
+			callback(null,final);
+		});
+		});
+};

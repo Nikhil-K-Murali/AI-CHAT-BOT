@@ -1,0 +1,28 @@
+const AWS = require('aws-sdk');
+
+AWS.config.update({
+    region:"us-east-1"
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+
+var table = "myBot";
+
+var getGreatings = (intent,callback) => {
+    
+    var params = {
+        TableName: table,
+        Key : {
+            "Intent": intent
+        }
+    };
+    
+    docClient.get(params, function (err,data) {
+        callback(err, data);
+    });
+    
+};
+
+module.exports = {
+    getGreatings
+};

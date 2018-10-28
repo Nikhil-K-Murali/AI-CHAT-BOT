@@ -1,0 +1,30 @@
+var DBHandler = require("./DBHandler");
+var r = "";
+exports.handler = (event, context, callback) => {
+    console.log(JSON.stringify(event));
+    
+var intent = event.currentIntent.name;
+DBHandler.getGreatings(intent, function (err,data) {
+    if(err) {
+        context.fail(err);
+    }
+    else {
+        r=Math.random()*(8-1)+0;
+        r=Math.floor(r);
+        var response ={
+            "dialogAction": {
+            "type":"Close",
+            "fulfillmentState":"Fulfilled",
+                "message": {
+                    "contentType":"PlainText",
+                    "content" : data.Item.Message[r]
+                }
+            
+            }
+        }
+        callback(null,response);
+    }
+    
+    });
+    
+};
